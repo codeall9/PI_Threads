@@ -3,9 +3,9 @@
 #include <cmath>
 #include <ctime>
 #include <iomanip>
+#include <cstdlib>
 using namespace std;
 
-//Bailey¨CBorwein¨CPlouffe formula
 long double Sigma(const long &num_th, long constant);
 unsigned long long BBP(const long &n_th);
 long PowMod(long base, long exp, long numMod);
@@ -16,9 +16,6 @@ int main(int argc, char* argv[])
 	unsigned long long *PI = nullptr;
 	double mytime = static_cast<double>(clock());
 	thread *myThreads = nullptr;
-	/*argc = 2;
-	argv[0] = "12027";
-	argv[1] = "8";*/
 	if (argc != 3) {
 		cout << "wrong input\n";
 		return -1;
@@ -38,7 +35,7 @@ int main(int argc, char* argv[])
 	if (numThread > PIsize) {
 		numThread = PIsize;
 	}
-	PI = new unsigned long long[PIsize];
+	PI = (decltype(PI))malloc(sizeof(unsigned long long) * PIsize);
 	myThreads = new thread[numThread];
 	amount = PIsize / numThread;
 	if (amount == 0) {
@@ -55,10 +52,10 @@ int main(int argc, char* argv[])
 		PI[PIsize - 1] = BBP((PIsize - 1) * 8);
 	}
 	cout << "PI = 3.";
-	for (int i = 0, k = 0; i < numThread ; ++i) {
+	for (int i = 0, k = 0; i < numThread; ++i) {
 		myThreads[i].join();
 		/*for (int j = 0; j < amount; ++j, ++k) {
-			cout << ((k % 8 == 0) ? "\n" : " ") << PI[k];
+		cout << ((k % 8 == 0) ? "\n" : " ") << PI[k];
 		}*/
 	}
 	//cout << " " << (PI[PIsize - 1] >> (4 * (8 - numDigit % 8)));
@@ -70,8 +67,8 @@ int main(int argc, char* argv[])
 		}
 		cout << ((i % 8 == 0) ? "\n" : " ") << setw(9) << setfill('0') << carry;
 	}
-	cout << ends;
-	for (int i = numDigit % 9, carry = 0; i > 0 ; --i) {
+	cout << " ";
+	for (int i = numDigit % 9, carry = 0; i > 0; --i) {
 		PI[0] = PI[0] * 10 + carry;
 		carry = PI[0] >> 32;
 		PI[0] &= 0xffffffff;
@@ -79,7 +76,7 @@ int main(int argc, char* argv[])
 	}
 	mytime = static_cast<double>(clock() - mytime);
 	cout << "\n\n(" << mytime << " ms, calculate with " << numThread << " threads)\n";
-	delete[] PI;
+	free(PI);
 	delete[] myThreads;
 	//cin.get();
 	return 0;
@@ -106,7 +103,7 @@ long double Sigma(const long &num_th, long constant)
 		denominator += 8;
 	}
 
-	return oo_result ;
+	return oo_result;
 }
 
 unsigned long long BBP(const long &n_th)
@@ -124,7 +121,7 @@ long PowMod(long base, long exp, long numMod)
 	base %= numMod;
 	while (true)
 	{
-		if ((exp & 1)== 1) {
+		if ((exp & 1) == 1) {
 			ans = (ans * base) % numMod;
 		}
 		if ((exp >>= 1) == 0) {
