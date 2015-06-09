@@ -3,7 +3,7 @@
 #include <cmath>
 #include <ctime>
 #include <iomanip>
-#include <cstdlib>
+
 using namespace std;
 
 long double Sigma(const long &num_th, long constant);
@@ -16,6 +16,9 @@ int main(int argc, char* argv[])
 	unsigned long long *PI = nullptr;
 	double mytime = static_cast<double>(clock());
 	thread *myThreads = nullptr;
+	argc = 3;
+	argv[1] = "2345";
+	argv[2] = "4";
 	if (argc != 3) {
 		cout << "wrong input\n";
 		return -1;
@@ -35,7 +38,8 @@ int main(int argc, char* argv[])
 	if (numThread > PIsize) {
 		numThread = PIsize;
 	}
-	PI = (decltype(PI))malloc(sizeof(unsigned long long) * PIsize);
+	//PI = (decltype(PI))malloc(sizeof(unsigned long long) * PIsize);
+	PI = new unsigned long long[PIsize];
 	myThreads = new thread[numThread];
 	amount = PIsize / numThread;
 	if (amount == 0) {
@@ -76,7 +80,8 @@ int main(int argc, char* argv[])
 	}
 	mytime = static_cast<double>(clock() - mytime);
 	cout << "\n\n(" << mytime << " ms, calculate with " << numThread << " threads)\n";
-	free(PI);
+	//free(PI);
+	delete[] PI;
 	delete[] myThreads;
 	//cin.get();
 	return 0;
