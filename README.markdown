@@ -16,3 +16,6 @@ Execution: ./s1234567_pi.out [N digits, N < 1000] [M threads = How many thread s
 Sample usage: ./s1234567_pi.out 10 2
 
 Sample output: PI=3.1415926535 (35ms, calculate with 2 threads)
+
+---
+g++編譯方式:g++ -std=c++1y -pthread -o pi.out *.cpp
