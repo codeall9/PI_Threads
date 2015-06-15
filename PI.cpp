@@ -16,9 +16,9 @@ int main(int argc, char* argv[])
 	unsigned long long *PI = nullptr;
 	double mytime = static_cast<double>(clock());
 	thread *myThreads = nullptr;
-	argc = 3;
+	/*argc = 3;
 	argv[1] = "2345";
-	argv[2] = "4";
+	argv[2] = "4";*/
 	if (argc != 3) {
 		cout << "wrong input\n";
 		return -1;
