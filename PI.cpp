@@ -1,7 +1,7 @@
 #include <iostream> 
 #include <thread>
 #include <cmath>
-#include <ctime>
+#include <chrono>
 #include <iomanip>
 
 using namespace std;
@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 {
 	int numThread = 0, numDigit = 0, PIsize = 0, amount = 0;
 	unsigned long long *PI = nullptr;
-	double mytime = static_cast<double>(clock());
+	chrono::steady_clock::time_point mytime = chrono::steady_clock::now();
 	thread *myThreads = nullptr;
 	/*argc = 3;
 	argv[1] = "2345";
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	if (PIsize % numThread != 0) {
 		PI[PIsize - 1] = BBP((PIsize - 1) * 8);
 	}
-	cout << "PI = 3.";
+	cout << "3.";
 	for (int i = 0, k = 0; i < numThread; ++i) {
 		myThreads[i].join();
 		/*for (int j = 0; j < amount; ++j, ++k) {
@@ -78,8 +78,7 @@ int main(int argc, char* argv[])
 		PI[0] &= 0xffffffff;
 		cout << carry;
 	}
-	mytime = static_cast<double>(clock() - mytime);
-	cout << "\n\n(" << mytime << " ms, calculate with " << numThread << " threads)\n";
+	cout << "\n\n(" << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - mytime).count() << " ms, calculate with " << numThread << " threads)\n";
 	//free(PI);
 	delete[] PI;
 	delete[] myThreads;
